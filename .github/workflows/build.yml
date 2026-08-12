@@ -13,9 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The classifier, the feature extractor and the reference library are
-      # pure integer logic with no radio and no GUI, so they run on the runner
-      # under ASan/UBSan instead of needing a Flipper.
+      # The classifier, the feature extractor, the reference library and the
+      # text layout all run on the runner under ASan/UBSan instead of needing
+      # a Flipper - the first three are pure integer logic, and the last builds
+      # against a stubbed canvas with a known font metric.
       - name: Run host tests
         run: make -C test
 

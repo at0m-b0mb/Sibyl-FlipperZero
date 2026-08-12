@@ -6,18 +6,19 @@
 CC     ?= cc
 CFLAGS := -std=gnu2x -Wall -Wextra -Werror -O1 -g
 CFLAGS += -fsanitize=address,undefined -fno-omit-frame-pointer
-CFLAGS += -I ..
+CFLAGS += -I .. -I stub
 
 FEATURES_SRC := host_features_test.c ../helpers/sib_features.c
 CLASSIFY_SRC := host_classify_test.c ../helpers/sib_classify.c \
                 ../helpers/sib_library.c ../helpers/sib_features.c
 LIBRARY_SRC  := host_library_test.c ../helpers/sib_library.c \
                 ../helpers/sib_classify.c ../helpers/sib_features.c
+TEXT_SRC     := host_text_test.c ../helpers/sib_text.c
 
 MOCKUP_SRC   := host_mockup_dump.c ../helpers/sib_classify.c \
                 ../helpers/sib_library.c ../helpers/sib_features.c
 
-BINS := host_features_test host_classify_test host_library_test
+BINS := host_features_test host_classify_test host_library_test host_text_test
 
 .PHONY: all run clean
 all: run
@@ -31,6 +32,10 @@ host_classify_test: $(CLASSIFY_SRC) sib_gen.h sib_test.h ../helpers/sib_classify
 host_library_test: $(LIBRARY_SRC) sib_test.h ../helpers/sib_library.h
 	$(CC) $(CFLAGS) $(LIBRARY_SRC) -o $@
 
+# Builds against test/stub/gui/canvas.h, so the font metric is known exactly.
+host_text_test: $(TEXT_SRC) sib_test.h stub/gui/canvas.h ../helpers/sib_text.h
+	$(CC) $(CFLAGS) $(TEXT_SRC) -o $@
+
 # Feeds tools_gen_mockups.py. Built without the sanitizers so the output is
 # clean text, and not part of `run` - it asserts nothing, it only reports.
 host_mockup_dump: $(MOCKUP_SRC) sib_gen.h
@@ -42,6 +47,8 @@ run: $(BINS)
 	./host_classify_test
 	@echo
 	./host_library_test
+	@echo
+	./host_text_test
 
 clean:
 	rm -rf $(BINS) host_mockup_dump mockup_data.txt *.dSYM

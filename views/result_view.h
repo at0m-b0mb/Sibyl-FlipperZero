@@ -37,9 +37,11 @@ typedef struct {
     char protocol[28];
 } ResultData;
 
+/* Only one, deliberately: going back from the result re-enters the listening
+ * scene, which restarts the radio, so "scan again" is what Back already does
+ * and a second way of spelling it would just be a key that does nothing new. */
 typedef enum {
     ResultViewEventExplain, /* open the explainer for the selected class */
-    ResultViewEventRescan, /* listen again                              */
 } ResultViewEvent;
 
 typedef void (*ResultViewCallback)(ResultViewEvent event, void* context);

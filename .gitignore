@@ -23,6 +23,7 @@ __pycache__/
 test/host_features_test
 test/host_classify_test
 test/host_library_test
+test/host_text_test
 test/host_mockup_dump
 test/mockup_data.txt
 test/*.dSYM/

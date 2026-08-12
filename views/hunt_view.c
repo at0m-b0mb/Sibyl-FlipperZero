@@ -107,7 +107,7 @@ static void hunt_view_draw(Canvas* canvas, void* model) {
         /* No band has risen yet. Say what to do, not "no signal" - the sweep
          * only measures while the transmitter is actually transmitting. */
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str(canvas, 2, 58, "Hold your remote down");
+        canvas_draw_str(canvas, 2, 58, "Hold the remote down");
         canvas_draw_str(canvas, 2, 63, "while this sweeps.");
     }
 }

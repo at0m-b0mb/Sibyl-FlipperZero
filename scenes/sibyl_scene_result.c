@@ -8,9 +8,6 @@ static void sibyl_result_view_callback(ResultViewEvent event, void* context) {
         app->explain_cls = result_view_selected_class(app->result_view);
         view_dispatcher_send_custom_event(app->view_dispatcher, SibylCustomEventExplain);
         break;
-    case ResultViewEventRescan:
-        view_dispatcher_send_custom_event(app->view_dispatcher, SibylCustomEventRescan);
-        break;
     }
 }
 
@@ -29,16 +26,11 @@ bool sibyl_scene_result_on_event(void* context, SceneManagerEvent event) {
     SibylApp* app = context;
     if(event.type != SceneManagerEventTypeCustom) return false;
 
-    switch(event.event) {
-    case SibylCustomEventExplain:
+    if(event.event == SibylCustomEventExplain) {
         scene_manager_next_scene(app->scene_manager, SibylSceneExplain);
         return true;
-    case SibylCustomEventRescan:
-        scene_manager_previous_scene(app->scene_manager);
-        return true;
-    default:
-        return false;
     }
+    return false;
 }
 
 void sibyl_scene_result_on_exit(void* context) {

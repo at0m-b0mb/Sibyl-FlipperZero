@@ -34,12 +34,14 @@ uint8_t sib_wrap(
             snprintf(cand, sizeof(cand), "%s %s", lines[n], word);
         }
 
-        if(canvas_string_width(canvas, cand) <= max_w) {
+        /* The empty-line test is not redundant: a word wider than the whole
+         * line never fits, and without it the wrapper would push it onto a
+         * fresh line for ever, leaving the current one blank. Clipped is
+         * better than dropped, and far better than an empty first row. */
+        if(canvas_string_width(canvas, cand) <= max_w || lines[n][0] == '\0') {
             strncpy(lines[n], cand, SIB_LINE_MAX - 1);
             lines[n][SIB_LINE_MAX - 1] = '\0';
         } else {
-            /* Start a new line. If the word will not fit on a line of its own
-             * either, put it there anyway - clipped is better than dropped. */
             n++;
             if(n >= max_lines) break;
             strncpy(lines[n], word, SIB_LINE_MAX - 1);

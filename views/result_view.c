@@ -212,7 +212,6 @@ static void rv_draw_trace(Canvas* canvas, const SibPulseTrain* t, int x0, int y_
     bool level = t->first_level;
     uint32_t acc = 0;
     int prev_x = x0;
-    int prev_y = level ? y_hi : y_lo;
 
     for(uint16_t i = 0; i < t->n; i++) {
         acc += t->dur[i];
@@ -224,10 +223,8 @@ static void rv_draw_trace(Canvas* canvas, const SibPulseTrain* t, int x0, int y_
         canvas_draw_line(canvas, x, y_lo, x, y_hi); /* the edge */
 
         prev_x = x;
-        prev_y = y;
         level = !level;
     }
-    UNUSED(prev_y);
 }
 
 static void rv_draw_evidence(Canvas* canvas, ResultModel* m) {
@@ -278,7 +275,7 @@ static void rv_draw_evidence(Canvas* canvas, ResultModel* m) {
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str(canvas, 2, 63, cap);
     } else {
-        canvas_draw_str(canvas, 2, 63, "No packet captured");
+        canvas_draw_str(canvas, 2, 63, "Nothing captured");
     }
 
     rv_page_dots(canvas, m->page);

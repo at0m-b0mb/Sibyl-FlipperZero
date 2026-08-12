@@ -39,7 +39,7 @@ First release.
 ### Notes
 
 - Listen-only. Sibyl never transmits, replays or clones, and does not store codes.
-- ~4,800 host checks run under ASan/UBSan in CI, alongside firmware builds against both
+- ~4,850 host checks run under ASan/UBSan in CI, alongside firmware builds against both
   the release and dev SDK channels.
 - The README screenshots are generated from the real classifier's own output rather than
   drawn by hand, so they cannot drift from what the app does.

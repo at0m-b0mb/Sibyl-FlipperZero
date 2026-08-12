@@ -44,7 +44,6 @@ typedef enum {
     SibylCustomEventBurst = 100, /* radio accepted a packet          */
     SibylCustomEventAnalyse, /* transmission over -> classify    */
     SibylCustomEventExplain, /* open the explainer               */
-    SibylCustomEventRescan, /* listen again                     */
     SibylCustomEventAdoptBand, /* Find Band found one -> use it    */
 } SibylCustomEvent;
 

@@ -41,13 +41,16 @@ static void ev_push_section(Canvas* canvas, ExplainModel* m, const char* head, c
     canvas_set_font(canvas, FontPrimary);
     ev_push(m, head, true);
 
+    /* Wrap straight into the model's line array rather than through a local
+     * copy of it. A local would be nearly 3 KB on the stack of the thread that
+     * is running the draw callback, for no reason at all. */
     canvas_set_font(canvas, FontSecondary);
-    char wrapped[EV_MAX_LINES][SIB_LINE_MAX];
+    if(m->n_lines >= EV_MAX_LINES) return;
     uint8_t room = (uint8_t)(EV_MAX_LINES - m->n_lines);
-    if(room > EV_MAX_LINES) room = EV_MAX_LINES;
     /* 118, not 124: the scrollbar owns the last few columns. */
-    uint8_t n = sib_wrap(canvas, body, 118, wrapped, room);
-    for(uint8_t i = 0; i < n; i++) ev_push(m, wrapped[i], false);
+    uint8_t n = sib_wrap(canvas, body, 118, &m->line[m->n_lines], room);
+    for(uint8_t i = 0; i < n; i++) m->heading[m->n_lines + i] = false;
+    m->n_lines = (uint8_t)(m->n_lines + n);
 }
 
 /* Wrapping needs a canvas, so the page is laid out on the first draw after the
@@ -59,7 +62,7 @@ static void ev_build(Canvas* canvas, ExplainModel* m) {
     ev_push_section(canvas, m, "What it is", e->what);
     ev_push_section(canvas, m, "How it works", e->how);
     ev_push_section(canvas, m, "Security", e->security);
-    ev_push_section(canvas, m, "What Sibyl can't tell", e->limits);
+    ev_push_section(canvas, m, "What it can't tell", e->limits);
 
     m->built = true;
 }
