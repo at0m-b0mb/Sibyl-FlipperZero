@@ -25,7 +25,7 @@
 #include "views/result_view.h"
 #include "scenes/sibyl_scene.h"
 
-#define SIBYL_VERSION "1.0"
+#define SIBYL_VERSION "1.1"
 
 /* How many identifications the session log remembers. */
 #define SIBYL_LOG_MAX 8

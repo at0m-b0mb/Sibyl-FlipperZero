@@ -3,6 +3,32 @@
 All notable changes to Sibyl are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1] - 2026-08-12
+
+### Fixed
+
+- **Blank first line in wrapped text.** The word wrapper responded to "does not fit"
+  by starting a new line, which is the wrong move for a word too long to fit on *any*
+  line: it got pushed forward for ever, leaving the row above it empty. An over-wide
+  word now stays on the current row and is clipped.
+- Three single-row strings were wider than the space available to them — two screen
+  footers and an explainer heading — and have been shortened.
+
+### Changed
+
+- The explainer wrapped each section through a local copy of its line array, putting
+  nearly 3 KB on the stack of the thread running the draw callback. It now wraps
+  straight into the view model.
+- Removed a redundant "scan again" event: going back from the result already re-enters
+  the listening scene and restarts the radio.
+
+### Added
+
+- A fourth host suite covering text layout, built against a stubbed canvas with a fixed
+  six-pixels-per-character metric, so wrapping is asserted arithmetically rather than
+  judged from screenshots. It also measures every single-row UI string against its own
+  budget — which is what caught the three above.
+
 ## [1.0] - 2026-08-11
 
 First release.
@@ -44,4 +70,5 @@ First release.
 - The README screenshots are generated from the real classifier's own output rather than
   drawn by hand, so they cannot drift from what the app does.
 
+[1.1]: https://github.com/at0m-b0mb/Sibyl-FlipperZero/releases/tag/v1.1
 [1.0]: https://github.com/at0m-b0mb/Sibyl-FlipperZero/releases/tag/v1.0
