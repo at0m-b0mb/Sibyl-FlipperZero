@@ -1,0 +1,25 @@
+App(
+    appid="sibyl",
+    name="Sibyl",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="sibyl_app",
+    # The session holds a full pulse train, the result screen holds a copy of
+    # it, and the explainer lays out its whole page in the view model.
+    stack_size=8 * 1024,
+    fap_category="Sub-GHz",
+    fap_icon="icons/sibyl_10px.png",
+    fap_icon_assets="icons",
+    fap_author="at0m-b0mb",
+    fap_weburl="https://github.com/at0m-b0mb/Sibyl-FlipperZero",
+    fap_version="1.0",
+    # Explicit, so the recursive default does not sweep test/ (host-only code)
+    # into the firmware build.
+    sources=[
+        "sibyl.c",
+        "helpers/*.c",
+        "views/*.c",
+        "scenes/*.c",
+    ],
+    fap_description="Shazam for RF. Capture any Sub-GHz signal and Sibyl tells you what kind of device sent it - gate remote, car fob, tyre sensor, weather station, doorbell, mains socket, alarm sensor, blind motor, meter or industrial control - then explains how that device works and what it means for its security. Anything the Flipper's decoder stack recognises is named outright; anything it does not is fingerprinted from the raw pulse train, measuring symbol width, packet length, repeat count and modulation. Inference is capped below CONFIRMED and always shown as a ranked shortlist, and a decoded encoder chip like Princeton or KeeLoq is reported as a chip rather than passed off as a product. Includes the captured packet drawn as a logic trace, a browsable device library, band hunting and auto modulation. Listen-only: never transmits, replays or clones.",
+    fap_libs=["subghz"],
+)
