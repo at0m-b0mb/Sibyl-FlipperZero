@@ -274,7 +274,9 @@ static void sib_device_up(SibRadio* radio, uint32_t frequency, uint8_t preset) {
 
     subghz_devices_init();
     radio->device = subghz_devices_get_by_name(SUBGHZ_DEVICE_CC1101_INT_NAME);
-    subghz_devices_begin(radio->device);
+    /* The internal CC1101 has no begin callback. Calling the generic begin
+     * wrapper is therefore unnecessary and, on Momentum, pulls in firmware-
+     * private Sub-GHz symbols that are not exported to FAPs. */
     subghz_devices_reset(radio->device);
     subghz_devices_load_preset(radio->device, preset, NULL);
 
